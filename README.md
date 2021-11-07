@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=KimJaeWoo%202021.08&fontSize=70)
+![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=KimJaeWoo%202020.08&fontSize=70)
 
 <h3 align="center">✔Skills✔</h3>
 <p align="center">

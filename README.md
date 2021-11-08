@@ -24,7 +24,7 @@
 </p>
 <br>
 
-<h3 align="center">🌳Personal history🌳</h3>
+<h3 align="center">🌳History🌳</h3>
 <p align="center">2020.08.01 WiiN 입사</p>
 
 <h3 align="center">🧷Company Project🧷</h3>

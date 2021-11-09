@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-class Solution {
+class runningEnd {
     public String solution(String[] participant, String[] completion) {
         
         String answer = "";

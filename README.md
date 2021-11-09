@@ -28,7 +28,7 @@
 <p align="center">2020.08.01 WiiN 입사</p>
 
 <h3 align="center">🧷Company Project🧷</h3>
-<p align="center">2020.08 ~ 2021.02 지키지 앱/웹 개발</p>
+<p align="center">2020.08 ~ 2021.02 지키지 앱/웹 개발(체크리스트, 로그인 api연동, aws, error페이지, 메인 및 게시판 개발)</p>
 <p align="center">2021.02 ~ 2021.03 서울시청법률지원 웹 유지보수</p>
-<p align="center">2021.03 ~ 2021.10 SK머트리얼즈 HR 시스템 개발</p>
-<p align="center">2020.10 ~ E제너두 쇼핑몰 개발</p>
+<p align="center">2021.03 ~ 2021.10 SK머트리얼즈 HR 시스템 개발(메인 위젯, 근태, 복리후생 개발)</p>
+<p align="center">2020.10 ~ E제너두 쇼핑몰 개발(메인,  개발)</p>

@@ -1,4 +1,4 @@
-public class integerNSum {
+public class IntegerNSum {
    long sum(int[] a)
    long sum = 0;
     

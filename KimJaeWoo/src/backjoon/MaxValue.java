@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class maxValue {
+public class MaxValue {
     public static void main(String[] args){
         int[] arr = {in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt()
                     ,in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt()}

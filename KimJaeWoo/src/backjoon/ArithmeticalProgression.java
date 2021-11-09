@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class arithmeticalProgression {
+public class ArithmeticalProgression {
   
   public static int hanNumber(int N) {
     int result = 0;

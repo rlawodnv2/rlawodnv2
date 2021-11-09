@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-class phoneBook {
+class PhoneBook {
     public boolean solution(String[] phone_book) {
         boolean answer = true;
         

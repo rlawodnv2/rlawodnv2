@@ -1,5 +1,4 @@
-package kr.co.etbs.xanadumall.common.util;
-
+package backjoon;
 import java.io.IOException;
 import java.io.PrintWriter;
 

@@ -1,3 +1,5 @@
+package backjoon;
+
 import java.io.*;
 
 public class ArithmeticalProgression {

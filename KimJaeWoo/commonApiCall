@@ -1,0 +1,112 @@
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
+/**
+ * @description API CALL 공통화
+ * @author 김재우
+ * @since 2023-03-02
+ */
+public class ApiCallUtil {
+	
+	private static final Logger log = LoggerFactory.getLogger(LgLifeApiCallUtil.class);
+	
+	public static HttpResponse apiCall(String url, JSONObject json) {
+
+		ArrayList<String> dataKeyList	= new ArrayList<>();
+		ArrayList<String> dataValueList	= new ArrayList<>();
+		ArrayList<Object> dataValueObj	= new ArrayList<>();
+		HttpPost post					= new HttpPost(url);
+		List<NameValuePair> params		= new ArrayList<>();
+		HttpResponse response;
+		try {
+			//api call
+			HttpClient client			= HttpClientBuilder.create().build();
+
+			post.setHeader("Accept", "application/json");
+			post.setHeader("Connection", "keep-alive");
+			post.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+			Iterator iterator			= json.keys();
+
+			while(iterator.hasNext()) {
+				String key				= iterator.next().toString();
+				dataKeyList.add(key);
+			}
+
+			log.info("//======================================");
+			log.info("||       DATA REQUEST CHECK LIST      ||");
+			log.info("======================================//");
+			for( int i = 0; i < dataKeyList.size(); i++ ) {
+				if( checkType( json.get(dataKeyList.get(i)) ).equals("String") || checkType( json.get(dataKeyList.get(i)) ).equals("Integer") ) {
+					dataValueList.add( json.getString( dataKeyList.get(i) ) );
+					log.info( "[" + dataKeyList.get(i) + " : " + json.getString( dataKeyList.get(i) ) + "]" );
+
+					params.add( new BasicNameValuePair( dataKeyList.get(i), json.getString( dataKeyList.get(i) ) ) );
+				}
+				else if( checkType( json.get(dataKeyList.get(i)) ).equals("JSONArray") ) {
+					dataValueObj.add( json.getJSONArray( dataKeyList.get(i) ) );
+					log.info( "[" + dataKeyList.get(i) + " : " + json.getJSONArray( dataKeyList.get(i) ) + "]" );
+
+					params.add( new BasicNameValuePair( dataKeyList.get(i), dataValueObj.get(i).toString() ) );
+				}
+
+			}
+			log.info("params:: {}",params);
+
+			HttpEntity postEntity		= new UrlEncodedFormEntity(params, "UTF-8");
+			post.setEntity(postEntity);
+			response					= client.execute(post);
+
+		} catch(Exception e) {
+			//api call close exception
+			log.info("ERROR {}",e);
+			throw new Exception("ERROR");
+		} finally {
+			//api call close
+			post.completed();
+		}
+
+		return response;
+	}
+
+
+
+	private static String checkType(Object obj) {
+		
+		if(obj.getClass().getName().contains("String")) {
+			return "String";
+		}
+		else if(obj.getClass().getName().contains("ArrayList")){
+			return "ArrayList";
+		}
+		else if(obj.getClass().getName().contains("JSONArray")){
+			return "JSONArray";
+		}
+		else if(obj.getClass().getName().contains("HashMap")) {
+			return "HashMap";
+		}
+		else if(obj.getClass().getName().contains("Integer")) {
+			return "Integer";
+		}
+		
+		return "unknown";
+	}
+	
+	
+}

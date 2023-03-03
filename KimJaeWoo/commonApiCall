@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ApiCallUtil {
 	
-	private static final Logger log = LoggerFactory.getLogger(LgLifeApiCallUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(ApiCallUtil.class);
 	
 	public static HttpResponse apiCall(String url, JSONObject json) {
 

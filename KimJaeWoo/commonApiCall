@@ -1,3 +1,5 @@
+package com.etbs.common.utils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,7 +22,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-
 public class HttpClientTemplate implements WebServiceInfra {
 	
 	/**
@@ -30,9 +31,10 @@ public class HttpClientTemplate implements WebServiceInfra {
 	 *       ,enc      - 기본 utf-8   설정 값 없을 시 null처리
 	 *       ,timeout  - 기본 10000ms 설정 값 없을 시 0으로 처리 
 	 * @author 김재우
+	 * @throws Exception 
 	 * @since 2023-03-14
 	 */
-	public String jsonConnect(String url, JSONObject json, String enc, int timeout) {
+	public String jsonConnect(String url, JSONObject json, String enc, int timeout) throws Exception {
 		AtomicInteger index 			= new AtomicInteger(0);
 		ArrayList<String> dataKeyList	= new ArrayList<>();
 		ArrayList<String> dataValueList	= new ArrayList<>();
@@ -45,66 +47,55 @@ public class HttpClientTemplate implements WebServiceInfra {
 
 		enc								= StringUtils.isEmpty(enc) ? "utf-8" : enc;
 		timeout							= timeout == 0 ? 10000 : timeout;
-		try {
-			//api call
-			post.setHeader("Accept", "application/json");
-			post.setHeader("Connection", "keep-alive");
-			post.setHeader("Content-Type", "application/x-www-form-urlencoded;charset="+enc);
-			
-			Iterator<?> iterator		= json.keys();
+		//api call
+		post.setHeader("Accept", "application/json");
+		post.setHeader("Connection", "keep-alive");
+		post.setHeader("Content-Type", "application/x-www-form-urlencoded;charset="+enc);
+		
+		Iterator<?> iterator		= json.keys();
 
-			while(iterator.hasNext()) {
-				String key				= iterator.next().toString();
-				dataKeyList.add(key);
-			}
-
-			log.info("//============================================");
-			log.info("||      HTTPCLIENT JSON DATA CHECK LIST     ||");
-			log.info("============================================//");
-			IntStream.range(0, dataKeyList.size()).boxed().forEach(i -> {
-				if( checkType( json.get(dataKeyList.get(i)) ).equals("String") || checkType( json.get(dataKeyList.get(i)) ).equals("Integer") ) {
-					
-					dataValueList.add( json.getString( dataKeyList.get(i) ) );
-					log.info( dataKeyList.get(i) + " : " + json.getString( dataKeyList.get(i) ) );
-
-					params.add( new BasicNameValuePair( dataKeyList.get(i), json.getString( dataKeyList.get(i) ) ) );
-				}
-				else if( checkType( json.get(dataKeyList.get(i)) ).equals("JSONArray") ) {
-
-					dataValueObj.add( json.getJSONArray( dataKeyList.get(i) ) );
-					log.info( dataKeyList.get(i) + " : " + json.getJSONArray( dataKeyList.get(i) ) );
-
-					params.add( new BasicNameValuePair( dataKeyList.get(i), dataValueObj.get(index.get()).toString() ) );
-					index.incrementAndGet();
-				}
-			});
-			log.info("//============================================");
-			log.info("|| END   HTTPCLIENT JSON DATA CHECK LIST    ||");
-			log.info("============================================//");
-
-			postEntity					= new UrlEncodedFormEntity(params, enc);
-			post.setEntity(postEntity);
-			client.getConnectionManager().closeIdleConnections(timeout, TimeUnit.MILLISECONDS);
-			response					= client.execute(post);
-
-			HttpEntity entity		= response.getEntity();
-			String result			= EntityUtils.toString(entity);
-			
-			int statusCode				= response.getStatusLine().getStatusCode();
-			if(statusCode != 200 && statusCode != 201) {
-				//API CALL ERROR
-				throw new Exception();
-			}
-			return result;
-			
-		} catch(Exception e) {
-			//api call close exception
-			log.error("HTTPCLIENT JSON API CALL ERROR {}",e);
-			throw new Exception("HTTPCLIENT JSON ERROR");
-		} finally {
-			//Important: Close the connect
-			client.getConnectionManager().shutdown();
+		while(iterator.hasNext()) {
+			String key				= iterator.next().toString();
+			dataKeyList.add(key);
 		}
+
+		log.info("//============================================");
+		log.info("||      HTTPCLIENT JSON DATA CHECK LIST     ||");
+		log.info("============================================//");
+		IntStream.range(0, dataKeyList.size()).boxed().forEach(i -> {
+			if( checkType( json.get(dataKeyList.get(i)) ).equals("String") || checkType( json.get(dataKeyList.get(i)) ).equals("Integer") ) {
+				
+				dataValueList.add( json.getString( dataKeyList.get(i) ) );
+				log.info( dataKeyList.get(i) + " : " + json.getString( dataKeyList.get(i) ) );
+
+				params.add( new BasicNameValuePair( dataKeyList.get(i), json.getString( dataKeyList.get(i) ) ) );
+			}
+			else if( checkType( json.get(dataKeyList.get(i)) ).equals("JSONArray") ) {
+
+				dataValueObj.add( json.getJSONArray( dataKeyList.get(i) ) );
+				log.info( dataKeyList.get(i) + " : " + json.getJSONArray( dataKeyList.get(i) ) );
+
+				params.add( new BasicNameValuePair( dataKeyList.get(i), dataValueObj.get(index.get()).toString() ) );
+				index.incrementAndGet();
+			}
+		});
+		log.info("//============================================");
+		log.info("|| END   HTTPCLIENT JSON DATA CHECK LIST    ||");
+		log.info("============================================//");
+
+		postEntity					= new UrlEncodedFormEntity(params, enc);
+		post.setEntity(postEntity);
+		client.getConnectionManager().closeIdleConnections(timeout, TimeUnit.MILLISECONDS);
+		response					= client.execute(post);
+
+		HttpEntity entity		= response.getEntity();
+		String result			= EntityUtils.toString(entity);
+		
+		//Important: Close the connect
+		client.getConnectionManager().shutdown();
+		
+		return result;
+			
 	}
 	
 	public String connect(String apiUrl, Map<String,String> params, String enc, int timeout) throws ClientProtocolException, IOException {
@@ -126,6 +117,9 @@ public class HttpClientTemplate implements WebServiceInfra {
 		HttpResponse response	= client.execute(post);
 		HttpEntity entity		= response.getEntity();
 		String result			= EntityUtils.toString(entity);
+		
+		//Important: Close the connect
+		client.getConnectionManager().shutdown();
 		
 		return result;
 	}

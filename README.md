@@ -13,7 +13,7 @@
 <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat-square&logo=Thymeleaf&logoColor=white"/></a>&nbsp
 <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/></a>&nbsp 
 <br>
-<img src="https://img.shields.io/badge/-selenium-CB02A?style=for-the-badge&logo=selenium&logoColor=white"/></a>&nbsp 
+<img src="https://img.shields.io/badge/-Selenium-333333?style=flat&logo=Selenium"/></a>&nbsp 
 <br>
 <img src="https://img.shields.io/badge/Oracle-F80000?style=flat-square&logo=Oracle&logoColor=white"/></a>&nbsp 
 <img src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927"/></a>&nbsp 
